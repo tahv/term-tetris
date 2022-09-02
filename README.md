@@ -8,6 +8,8 @@ This is a side project to learn / experiment with the C language.
 
 ## Installation
 
+### Manual
+
 Install dependencies
 
 ```bash
@@ -18,6 +20,14 @@ Compile and run
 
 ```bash
 make all && ./tetris
+```
+
+### Docker
+
+You can the game with the local [Dockerfile](./Dockerfile)
+
+```bash
+docker build -t tetris . && docker run -it --rm tetris
 ```
 
 ## Commands
