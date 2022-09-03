@@ -31,6 +31,7 @@ int main(void)
     WINDOW *game_win = init_boardwin(game_board->rows, game_board->cols);
     WINDOW *next_win = init_nextwin(game_win, NUM_BLOCKS);
     WINDOW *hold_win = init_holdwin(game_win, NUM_BLOCKS);
+    WINDOW *score_win = init_scorewin(next_win);
 
     // Init player first piece
     Piece player;
@@ -53,11 +54,15 @@ int main(void)
 
         // the tetrimino will fall at its normal fall Speed whether or
         // not it is being manipulated by the player.
-        int fall_speed = fall_speed_ms(game.level);
+        int level = get_level(game.lines_cleared);
+        int fall_speed = fall_speed_ms(level);
         if (game.ms_since_last_fall >= fall_speed) {
             game.ms_since_last_fall = 0;
             new_pos.pos.y++;
             collide = check_collision(&new_pos, game_board);
+            if (!collide) {
+                player.pos.y = new_pos.pos.y;
+            }
         }
 
         // We only consider player movement if the fall has not locked the piece
@@ -98,8 +103,12 @@ int main(void)
             push_player(&player, &queue[game.pieces % QUEUE_SIZE], game_board->cols);
             push_next(&next, queue, QUEUE_SIZE, &game.pieces);
             draw_piece(&next, next_win, C_BLOCK, false);
-            clear_complete_rows(game_board);
             wrefresh(next_win);
+
+            int cleared = clear_complete_rows(game_board);
+            update_score(&game.score, level, cleared);
+            game.lines_cleared += cleared;
+            draw_score(score_win, &game);
         }
 
         // Render phase

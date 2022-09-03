@@ -12,7 +12,7 @@ chtype C_GHOST;
 typedef struct {
     bool game_over;
     unsigned int score;
-    unsigned int level;  // Current level
+    unsigned int lines_cleared;
     unsigned int ms_since_last_fall;  // Time since current piece has dropped one row
     unsigned int pieces;  // Num of pieces played in game
 }
@@ -41,6 +41,9 @@ typedef struct
 Piece;
 
 int fall_speed_ms(int level);
+int get_level(int lines_cleared);
+void draw_score(WINDOW* scorewin, Game *game);
+void update_score(int *score, int level, int line_cleared);
 void init_game(Game *game);
 
 Position tetromino_index_pos(Tetromino *tetromino, int index);

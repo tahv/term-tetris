@@ -48,13 +48,13 @@ docker build -t tetris . && docker run -it --rm tetris
 
 From the [Tetris Guidelines](https://tetris.wiki/Tetris_Guideline)
 
-- [X] [Ghost piece](https://tetris.wiki/Ghost_piece)
-- [ ] Scoring
-- [X] [Marathon](https://tetris.wiki/Marathon) speed curve
-- [ ] [Super rotation system](https://tetris.wiki/Super_Rotation_System)
 - [X] [Random Generator](https://tetris.wiki/Random_Generator) for sequence of tetrominos
-- [ ] [Hold](https://tetris.wiki/Tetris_Guideline) current piece
-- [ ] [Lock Delay](https://tetris.wiki/Lock_delay)
-- [ ] Hard Drop
+- [X] [Marathon](https://tetris.wiki/Marathon) speed curve
+- [X] Scoring
 - [X] Next piece display
-
+- [X] [Ghost piece](https://tetris.wiki/Ghost_piece)
+- [ ] [Hold](https://tetris.wiki/Tetris_Guideline) current piece
+- [ ] Hard Drop
+- [ ] [Lock Delay](https://tetris.wiki/Lock_delay)
+- [ ] [Super rotation system](https://tetris.wiki/Super_Rotation_System)
+- [ ] Game Over

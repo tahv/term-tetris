@@ -27,6 +27,7 @@ void init_ncurses(void);
 WINDOW* init_boardwin(int rows, int cols);
 WINDOW* init_nextwin(WINDOW *boardwin, int size);
 WINDOW* init_holdwin(WINDOW *boardwin, int size);
+WINDOW* init_scorewin(WINDOW* nextwin);
 
 void sleep_ms(int milliseconds);
 

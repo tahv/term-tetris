@@ -64,6 +64,40 @@ WINDOW* init_nextwin(WINDOW *boardwin, int size)
     return nextwin;
 }
 
+WINDOW* init_scorewin(WINDOW* nextwin)
+{
+    const int SPACING = 1;
+
+    Position nextwin_max;
+    getmaxyx(nextwin, nextwin_max.y, nextwin_max.x);
+
+    Position nextwin_beg;
+    getbegyx(nextwin, nextwin_beg.y, nextwin_beg.x);
+
+    Position nextwin_end = {
+        nextwin_max.y + nextwin_beg.y,
+        nextwin_max.x + nextwin_beg.x
+    };
+
+    WINDOW *scorewin = newwin(
+        8,
+        nextwin_max.x * WIN_SCALE,
+        nextwin_end.y + SPACING,
+        nextwin_beg.x
+    );
+
+    mvwprintw(scorewin, 0, 0, "Score");
+    mvwprintw(scorewin, 1, 0, "0");
+    mvwprintw(scorewin, 3, 0, "Level");
+    mvwprintw(scorewin, 4, 0, "1");
+    mvwprintw(scorewin, 6, 0, "Lines");
+    mvwprintw(scorewin, 7, 0, "0");
+
+    wrefresh(scorewin);
+
+    return scorewin;
+}
+
 WINDOW* init_holdwin(WINDOW *boardwin, int size)
 {
     const int BORDERS = 2;

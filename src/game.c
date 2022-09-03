@@ -11,11 +11,38 @@ int fall_speed_ms(int level)
     return ms > 0 ? ms : 1;
 }
 
+// Fixed-goal system, +1 level every 10 lines cleared, starting at level 1.
+int get_level(int lines_cleared)
+{
+    return lines_cleared / 10 + 1;
+}
+
+void draw_score(WINDOW* scorewin, Game *game)
+{
+    mvwprintw(scorewin, 0, 0, "Score");
+    mvwprintw(scorewin, 1, 0, "%d", game->score);
+
+    int level = get_level(game->lines_cleared);
+    mvwprintw(scorewin, 3, 0, "Level");
+    mvwprintw(scorewin, 4, 0, "%d", level);
+
+    mvwprintw(scorewin, 6, 0, "Lines");
+    mvwprintw(scorewin, 7, 0, "%d", game->lines_cleared);
+
+    wrefresh(scorewin);
+}
+
+void update_score(int *score, int level, int line_cleared)
+{
+    int points[] = {0, 100, 300, 500, 800};
+    (*score) += points[line_cleared] * level;
+}
+
 void init_game(Game *game)
 {
     game->game_over = false;
     game->score = 0;
-    game->level = 1;
+    game->lines_cleared = 0;
     game->ms_since_last_fall = 0;
     game->pieces = 0;
 }
