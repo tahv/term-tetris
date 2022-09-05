@@ -49,6 +49,7 @@ void init_game(Game *game);
 Position tetromino_index_pos(Tetromino *tetromino, int index);
 Position piece_index_pos(Piece *piece, int index);
 
+Position drop_position(Piece *piece, Board *board, WINDOW* window);
 void draw_piece(Piece *piece, WINDOW *window, chtype block, bool additive);
 void draw_ghost(Piece *piece, Board *board, WINDOW *window);
 bool check_collision(Piece *piece, Board *board);

@@ -37,11 +37,19 @@ int main(void)
     Piece player;
     push_player(&player, &queue[0], game_board->cols);
 
+    Piece hold;
+    hold.tetromino.size = 0;
+    hold.pos.x = 0;
+    hold.pos.y = 0;
+    bool can_hold = true;
+
     // Init next piece
     Piece next;
     push_next(&next, queue, QUEUE_SIZE, &game.pieces);
     draw_piece(&next, next_win, C_BLOCK, false);
     wrefresh(next_win);
+
+    bool dropped = false;
 
     while (!game.game_over) {
         Piece new_pos;
@@ -72,25 +80,57 @@ int main(void)
             switch(getch()) {
                 case KEY_LEFT:
                     new_pos.pos.x--;
+                    collide = check_collision(&new_pos, game_board);
                     break;
                 case KEY_RIGHT:
                     new_pos.pos.x++;
+                    collide = check_collision(&new_pos, game_board);
                     break;
                 case KEY_DOWN:
                     game.ms_since_last_fall = 0;
                     new_pos.pos.y++;
+                    collide = check_collision(&new_pos, game_board);
                     break;
                 case KEY_UP:
                     rotate_right(&new_pos.tetromino);
+                    collide = check_collision(&new_pos, game_board);
                     break;
                 case ' ':
+                    player.pos = drop_position(&player, game_board, game_win);
+                    dropped = true;
+                    collide = true;
                     break;
                 case 'c':
+                    if (!can_hold) {
+                        break;
+                    }
+                    if (!hold.tetromino.size) {
+                        hold.tetromino = player.tetromino;
+                        game.pieces++;
+
+                        push_player(&player, &queue[game.pieces % QUEUE_SIZE], game_board->cols);
+                        new_pos.pos = player.pos;
+                        new_pos.tetromino = player.tetromino;
+
+                        push_next(&next, queue, QUEUE_SIZE, &game.pieces);
+                        draw_piece(&next, next_win, C_BLOCK, false);
+                        wrefresh(next_win);
+                    } else {
+                        Tetromino swap = player.tetromino;
+
+                        push_player(&player, &hold.tetromino, game_board->cols);
+                        new_pos.pos = player.pos;
+                        new_pos.tetromino = player.tetromino;
+
+                        hold.tetromino = swap;
+                    }
+                    draw_piece(&hold, hold_win, C_BLOCK, false);
+                    wrefresh(hold_win);
+                    can_hold = false;
                     break;
                 default:
                     break;
             }
-            collide = check_collision(&new_pos, game_board);
         }
 
         // Cleanup phase
@@ -98,7 +138,7 @@ int main(void)
         if (!collide) {
             player.tetromino = new_pos.tetromino;
             player.pos = new_pos.pos;
-        } else if (new_pos.pos.y > player.pos.y) {
+        } else if (new_pos.pos.y > player.pos.y || dropped == true) {
             lock(&player, game_board);
             push_player(&player, &queue[game.pieces % QUEUE_SIZE], game_board->cols);
             push_next(&next, queue, QUEUE_SIZE, &game.pieces);
@@ -109,6 +149,8 @@ int main(void)
             update_score(&game.score, level, cleared);
             game.lines_cleared += cleared;
             draw_score(score_win, &game);
+            can_hold = true;
+            dropped = false;
         }
 
         // Render phase

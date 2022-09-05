@@ -83,7 +83,7 @@ void draw_piece(Piece* piece, WINDOW* window, chtype block, bool additive)
     free_board(board);
 }
 
-void draw_ghost(Piece *piece, Board *board, WINDOW *window)
+Position drop_position(Piece *piece, Board *board, WINDOW* window)
 {
     int distance = board->rows;
 
@@ -107,10 +107,21 @@ void draw_ghost(Piece *piece, Board *board, WINDOW *window)
         }
     }
 
+    Position pos;
+    pos.y = piece->pos.y + distance;
+    pos.x = piece->pos.x;
+
+    return pos;
+}
+
+void draw_ghost(Piece *piece, Board *board, WINDOW *window)
+{
+    Position position = drop_position(piece, board, window);
+
     Piece ghost_piece;
     ghost_piece.tetromino = piece->tetromino;
-    ghost_piece.pos.y = piece->pos.y + distance;
-    ghost_piece.pos.x = piece->pos.x;
+    ghost_piece.pos = position;
+
     draw_piece(&ghost_piece, window, C_GHOST, true);
 }
 
