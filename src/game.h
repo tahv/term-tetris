@@ -6,8 +6,8 @@
 
 #define NUM_BLOCKS 4  // Number of blocks in a tetromino
 
-chtype C_BLOCK;
-chtype C_GHOST;
+extern chtype C_BLOCK;
+extern chtype C_GHOST;
 
 typedef struct {
     bool game_over;
