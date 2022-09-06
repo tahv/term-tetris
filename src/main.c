@@ -1,11 +1,6 @@
 #include <stdlib.h>
 #include "game.h"
 
-// TODO allow spin at top
-// TODO scoring
-// TODO level progression
-// TODO hold piece
-
 int main(void)
 {
     srand(time(NULL));
