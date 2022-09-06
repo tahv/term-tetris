@@ -2,18 +2,24 @@
 
 A Tetris game written in C using `ncurses`.
 
-This is a side project to learn / experiment with the C language.
+This is a side project to learn and experiment with the C language.
 
 ![gameplay](docs/gameplay.gif)
 
 ## Installation
+
+Clone this project and cd into it
+
+```bash
+git clone git@github.com:tahv/term-tetris.git && cd term-tetris
+```
 
 ### Manual
 
 Install dependencies
 
 ```bash
-sudo apt install libncursesw5-dev
+sudo apt install gcc make libncursesw5-dev
 ```
 
 Compile and run
@@ -24,7 +30,7 @@ make all && ./tetris
 
 ### Docker
 
-You can the game with the local [Dockerfile](./Dockerfile)
+You can run the game with the local [Dockerfile](./Dockerfile)
 
 ```bash
 docker build -t tetris . && docker run -it --rm tetris
@@ -61,6 +67,6 @@ https://raw.githubusercontent.com/frankkopp/Tetris/master/2009%20Tetris%20Design
 - [X] [Ghost piece](https://tetris.wiki/Ghost_piece)
 - [X] [Hold](https://tetris.wiki/Tetris_Guideline) current piece
 - [X] Hard Drop
+- [X] Game Over
 - [ ] [Lock Delay](https://tetris.wiki/Lock_delay)
 - [ ] [Super rotation system](https://tetris.wiki/Super_Rotation_System)
-- [ ] Game Over
