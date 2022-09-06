@@ -151,6 +151,11 @@ int main(void)
             draw_score(score_win, &game);
             can_hold = true;
             dropped = false;
+
+            // Game over if new player collide with a block on the board
+            if (check_collision(&player, game_board)) {
+                game.game_over = true;
+            }
         }
 
         // Render phase
@@ -166,6 +171,11 @@ int main(void)
         game.ms_since_last_fall += sleep_time;
         sleep_ms(sleep_time);
     }
+
+    mvwprintw(game_win, game_board->rows / 2, 6, "Game Over");
+    wrefresh(game_win);
+    timeout(-1);
+    getch();
 
     free_board(game_board);
     endwin();  // deallocates memory and end ncurses
